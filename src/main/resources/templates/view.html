@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>一覧表示</title>
+</head>
+<body>
+	<!--登録画面に移動-->
+	<h1>登録ボタン</h1>
+	<a th:href="@{/insert}">登録する</a>	
+		<!--繰り返し表示する-->
+
+	<h1>全件表示</h1>
+<div th:each="user : ${userList}">
+    <p th:text="'ID: ' + ${user.id}"></p>
+    <p th:text="'名前: ' + ${user.name}"></p>
+    <p th:text="'年齢: ' + ${user.age}"></p>
+    <p th:text="'メッセージ: ' + ${user.message}"></p><br>
+    
+    <!--更新ボタン-->
+    <a th:href="@{/update(id=${user.id})}">更新する</a>
+</div>
+
+
+
+</body>
+</html>
