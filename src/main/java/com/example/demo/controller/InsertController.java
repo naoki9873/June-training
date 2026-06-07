@@ -33,6 +33,7 @@ public class InsertController {
 		
 		//バリデーションチェック
 		if(bindingResult.hasErrors()) {
+			//HTML表示する
 			return "insert";
 		}
 		
