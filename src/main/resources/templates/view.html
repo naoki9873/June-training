@@ -11,7 +11,7 @@
 		<!--繰り返し表示する-->
 
 	<h1>全件表示</h1>
-<div th:each="user : ${userList}">
+<div th:each="user : ${userPage}">
     <p th:text="'ID: ' + ${user.id}"></p>
     <p th:text="'名前: ' + ${user.name}"></p>
     <p th:text="'年齢: ' + ${user.age}"></p>
@@ -20,6 +20,30 @@
     <!--更新ボタン-->
     <a th:href="@{/update(id=${user.id})}">更新する</a>
 </div>
+
+<!-- ページネーション -->
+    <div>
+        <!-- 前へ -->
+        <a th:if="${!userPage.first}" 
+           th:href="@{/view(page=${userPage.number - 1})}">前へ</a>
+
+        <!-- ページ番号 -->
+        <span th:each="i : ${#numbers.sequence(0, userPage.totalPages - 1)}">
+            <a th:href="@{/view(page=${i})}" 
+               th:text="${i + 1}"
+               th:style="${i == userPage.number} ? 'font-weight:bold'"></a>
+        </span>
+
+        <!-- 次へ -->
+        <a th:if="${!userPage.last}" 
+           th:href="@{/view(page=${userPage.number + 1})}">次へ</a>
+    </div>
+
+    <!-- ページ情報 -->
+    <p th:text="|${userPage.totalElements}件中 
+                ${userPage.number * userPage.size + 1}〜
+                ${userPage.number * userPage.size + userPage.numberOfElements}件表示|">
+    </p>
 
 
 

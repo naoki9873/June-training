@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,12 +22,11 @@ public class UpdateController {
 
 	//更新画面表示
 	@GetMapping("/update")
-	public String upDate(@RequestParam Integer id, Model model) {
-		//IDを元にuserFormDB取得する
-		var userForm = updateService.findUser(id);
-		//HTMLに送る
-		model.addAttribute("userForm", userForm);
-		//更新画面返す
+	public String upDate(@RequestParam Integer id,
+			@ModelAttribute("userForm") UserForm userForm, // ← 追加
+			Model model) {
+		var form = updateService.findUser(id);
+		model.addAttribute("userForm", form);
 		return "update";
 	}
 
@@ -35,10 +35,14 @@ public class UpdateController {
 	public String doUpdate(@Validated UserForm userForm, BindingResult bindeingResult, Model model) {
 		//バリデーションチェック
 		if (bindeingResult.hasErrors()) {
-			//空のオブジェクト渡す
-			model.addAttribute("userForm", userForm);
+
+			//DB値取得
+			var user = updateService.findUser(userForm.getId());
+			//DBの値を渡す
+			model.addAttribute("userForm", user);
 			return "update";
 		}
+
 		//受け取った値を元にDB更新
 		updateService.userUpdate(userForm);
 
