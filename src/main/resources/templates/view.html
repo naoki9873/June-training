@@ -5,47 +5,40 @@
     <title>一覧表示</title>
 </head>
 <body>
-	<!--登録画面に移動-->
-	<h1>登録ボタン</h1>
-	<a th:href="@{/insert}">登録する</a>	
-		<!--繰り返し表示する-->
-
-	<h1>全件表示</h1>
-<div th:each="user : ${userPage}">
-    <p th:text="'ID: ' + ${user.id}"></p>
-    <p th:text="'名前: ' + ${user.name}"></p>
-    <p th:text="'年齢: ' + ${user.age}"></p>
-    <p th:text="'メッセージ: ' + ${user.message}"></p><br>
+    <h1>登録</h1>
+    <a th:href="@{/insert}">登録する</a>
     
-    <!--更新ボタン-->
-    <a th:href="@{/update(id=${user.id})}">更新する</a>
-</div>
-
-<!-- ページネーション -->
+    <h1>検索</h1>
+    <form th:action="@{/view}" method="get">
+		<p>ID:
+			<input type="number" name="id">
+		</p>
+		<button type="submit">検索</button>
+    </form>
+    
+    <!--10件表示する-->
+    <h1>全件表示</h1>
+    <div th:each="user : ${userPage}">
+        <p th:text="'ID: ' + ${user.id}"></p>
+        <p th:text="'名前: ' + ${user.name}"></p>
+        <p th:text="'年齢: ' + ${user.age}"></p>
+        <p th:text="'メッセージ: ' + ${user.message}"></p><br>
+        <a th:href="@{/update(id=${user.id})}">更新する</a>
+    </div>
+    
+    <!--ページネーション-->
     <div>
-        <!-- 前へ -->
-        <a th:if="${!userPage.first}" 
-           th:href="@{/view(page=${userPage.number - 1})}">前へ</a>
-
-        <!-- ページ番号 -->
+	    <!--前-->
+        <a th:if="${!userPage.first}" th:href="@{/view(page=${userPage.number - 1})}">前へ</a>
+        
         <span th:each="i : ${#numbers.sequence(0, userPage.totalPages - 1)}">
-            <a th:href="@{/view(page=${i})}" 
-               th:text="${i + 1}"
-               th:style="${i == userPage.number} ? 'font-weight:bold'"></a>
+            <a th:href="@{/view(page=${i})}" th:text="${i + 1}" th:style="${i == userPage.number} ? 'font-weight:bold'"></a>
         </span>
-
-        <!-- 次へ -->
-        <a th:if="${!userPage.last}" 
-           th:href="@{/view(page=${userPage.number + 1})}">次へ</a>
+        
+	    <!--次-->        
+        <a th:if="${!userPage.last}" th:href="@{/view(page=${userPage.number + 1})}">次へ</a>
     </div>
 
-    <!-- ページ情報 -->
-    <p th:text="|${userPage.totalElements}件中 
-                ${userPage.number * userPage.size + 1}〜
-                ${userPage.number * userPage.size + userPage.numberOfElements}件表示|">
-    </p>
-
-
-
+    <p th:text="|${userPage.totalElements}件中 ${userPage.number * userPage.size + 1}〜${userPage.number * userPage.size + userPage.numberOfElements}件表示|"></p>
 </body>
 </html>
