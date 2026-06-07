@@ -3,9 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.UserEntity;
@@ -24,9 +22,11 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
-	public Page<UserEntity> findAll(int page) {
-        // 1ページ5件、id昇順で取得
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("id").ascending());
+	public Page<UserEntity> findById(Integer id,Pageable pageable) {
+        return userRepository.findById(id , pageable);
+    }
+	
+	public Page<UserEntity> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 }
